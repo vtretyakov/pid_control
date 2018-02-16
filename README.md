@@ -78,6 +78,6 @@ The steering controller hyperparameters were selected by hand following a simple
 
 Unfortunately simulator recording didn't work for me, so I had to perform a screen recording which introduced some lags into the performance.
 
-![Simulator run](media/simulator.mov)
+![Simulator run](media/simulator.mp4)
 
 
