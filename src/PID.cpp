@@ -33,6 +33,8 @@ void PID::UpdateError(double cte) {
 void PID::UpdateError(double ref_value, double current_value) {
   p_error_ = ref_value - current_value;
   i_error_ += p_error_;
+  if (i_error_ > integral_limit_) i_error_ = integral_limit_;
+  else if (i_error_ < -integral_limit_) i_error_ = -integral_limit_;
   d_error_ = p_error_ - last_error_;
   last_error_ = p_error_;
 }
