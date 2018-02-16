@@ -60,8 +60,16 @@ There are two controllers that work together - the velocity and steering control
 The steering controller was tricky to tune especially for high speed. The submitted code works well for velocities in range 60 - 70 MPH and is sharply tuned. For lower velocities a different set of parameters is prefered to achieve a smooth motion.
 The steering controller hyperparameters were selected by hand following a simple approach:
 
-1. Tune the P part to have a satisfactory steering with a slight oscillation. Reduce the P part slightly after finding the P paramter around the oscillation point.
-2. Increase the D part till the car is capable of dealing with sharp turns without leaving the road.
+1. Tune the `P` part to have a satisfactory steering with a slight oscillation. Reduce the `P` part slightly after finding the `P` paramter around the oscillation point.
+2. Increase the `D` part till the car is capable of dealing with sharp turns without leaving the road.
 3. Add integral part to smoothen the steering and to be able to handle long curves. Integral part was in this case the most challenging part which required finding not only the `I` coefficient but also a proper integral limit. Having a large integral limit with a low `I` coefficient would introduce oscillations. Reducing the limit but increasing the `I` coefficient helped to achive the desirable result.
 
 ![Dealing with long curves](media/curve.png)
+
+## Simulation
+
+### The vehicle must successfully drive a lap around the track.
+
+Unfortunately simulator recording didn't work for me, so I had to perform a screen recording which introduced some lags into the performance.
+
+![Simulator run](media/simulator.mov)
