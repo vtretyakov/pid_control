@@ -39,8 +39,6 @@ void PID::UpdateError(double ref_value, double current_value) {
 
 double PID::TotalError() {
   double output = Kp_ * p_error_ + Ki_ * i_error_ + Kd_ * d_error_;
-  if (output > 1.0) output = 1.0;
-  else if (output < -1.0) output = -1.0;
   return output;
 }
 
