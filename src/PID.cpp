@@ -24,6 +24,8 @@ void PID::Init(double Kp, double Ki, double Kd, double integral_limit) {
 void PID::UpdateError(double cte) {
   p_error_ = - cte;
   i_error_ += p_error_;
+  if (i_error_ > integral_limit_) i_error_ = integral_limit_;
+  else if (i_error_ < -integral_limit_) i_error_ = -integral_limit_;
   d_error_ = p_error_ - last_error_;
   last_error_ = p_error_;
 }
