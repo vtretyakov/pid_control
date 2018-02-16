@@ -35,10 +35,11 @@ int main()
   PID pid;
   PID vel_pid;
   // TODO: Initialize the pid variable.
-  pid.Init(0.05, 0.003, 6.5, 100.0);
+  pid.Init(0.08, 0.003, 4.5, 100.0);
   vel_pid.Init(0.5, 0.01, 4.5, 100.0);
+  double target_speed = 80.0;
 
-  h.onMessage([&pid, &vel_pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
+  h.onMessage([&pid, &vel_pid, &target_speed](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
     // "42" at the start of the message means there's a websocket message event.
     // The 4 signifies a websocket message
     // The 2 signifies a websocket event
@@ -60,12 +61,13 @@ int main()
           * NOTE: Feel free to play around with the throttle and speed. Maybe use
           * another PID controller to control the speed!
           */
+          pid.integral_limit_ = speed;
           pid.UpdateError(cte);
           steer_value = pid.TotalError();
           if (steer_value > 1.0) steer_value = 1.0;
           else if (steer_value < -1.0) steer_value = -1.0;
           
-          vel_pid.UpdateError(80.0, speed);
+          vel_pid.UpdateError(target_speed, speed);
           double throttle = vel_pid.TotalError();
           if (throttle > 1.0) throttle = 1.0;
           else if (throttle < -0.1) throttle = -1.0;
