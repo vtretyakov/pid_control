@@ -35,64 +35,33 @@ There's an experimental patch for windows in this [PR](https://github.com/udacit
 3. Compile: `cmake .. && make`
 4. Run it: `./pid`. 
 
-Tips for setting up your environment can be found [here](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/0949fca6-b379-42af-a919-ee50aa304e6a/lessons/f758c44c-5e40-4e01-93b5-1a82aa4e044f/concepts/23d376c7-0195-4276-bdf0-e02f1f3c665d)
+# [Rubric](https://review.udacity.com/#!/rubrics/824/view) points
 
-## Editor Settings
+## Compilation
 
-We've purposefully kept editor configuration files out of this repo in order to
-keep it as simple and environment agnostic as possible. However, we recommend
-using the following settings:
+### Your code should compile.
 
-* indent using spaces
-* set tab width to 2 spaces (keeps the matrices in source code aligned)
+The code compiles without errors with cmake and make as described in Basic Build Instructions.
 
-## Code Style
+## Implementation
 
-Please (do your best to) stick to [Google's C++ style guide](https://google.github.io/styleguide/cppguide.html).
+### The PID procedure follows what was taught in the lessons.
 
-## Project Instructions and Rubric
+The base PID algorithm follows what's presented in the lessons. The only difference is adding a [limiter](./src/PID.cpp#L27) to the integral part to prevent the controller windup.
 
-Note: regardless of the changes you make, your project must be buildable using
-cmake and make!
+## Reflection
 
-More information is only accessible by people who are already enrolled in Term 2
-of CarND. If you are enrolled, see [the project page](https://classroom.udacity.com/nanodegrees/nd013/parts/40f38239-66b6-46ec-ae68-03afd8a601c8/modules/f1820894-8322-4bb3-81aa-b26b3c6dcbaf/lessons/e8235395-22dd-4b87-88e0-d108c5e5bbf4/concepts/6a4d8d42-6a04-4aa6-b284-1697c0fd6562)
-for instructions and the project rubric.
+### Describe the effect each of the P, I, D components had in your implementation.
 
-## Hints!
+### Describe how the final hyperparameters were chosen.
 
-* You don't have to follow this directory structure, but if you do, your work
-  will span all of the .cpp files here. Keep an eye out for TODOs.
+There are two controllers that work together - the velocity and steering controllers. Tuning the velocity controller was the easiest task. I started with proportional part only reaching a satisfactory speed control with a static offset. Then I moved on to the differential part to reach a satisfactory behaviour in particular for braking. The last step was adding the integral part to compensate for the static offset.
 
-## Call for IDE Profiles Pull Requests
+The steering controller was tricky to tune especially for high speed. The submitted code works well for velocities in range 60 - 70 MPH and is sharply tuned. For lower velocities a different set of parameters is prefered to achieve a smooth motion.
+The steering controller hyperparameters were selected by hand following a simple approach:
 
-Help your fellow students!
+1. Tune the P part to have a satisfactory steering with a slight oscillation. Reduce the P part slightly after finding the P paramter around the oscillation point.
+2. Increase the D part till the car is capable of dealing with sharp turns without leaving the road.
+3. Add integral part to smoothen the steering and to be able to handle long curves. Integral part was in this case the most challenging part which required finding not only the `I` coefficient but also a proper integral limit. Having a large integral limit with a low `I` coefficient would introduce oscillations. Reducing the limit but increasing the `I` coefficient helped to achive the desirable result.
 
-We decided to create Makefiles with cmake to keep this project as platform
-agnostic as possible. Similarly, we omitted IDE profiles in order to we ensure
-that students don't feel pressured to use one IDE or another.
-
-However! I'd love to help people get up and running with their IDEs of choice.
-If you've created a profile for an IDE that you think other students would
-appreciate, we'd love to have you add the requisite profile files and
-instructions to ide_profiles/. For example if you wanted to add a VS Code
-profile, you'd add:
-
-* /ide_profiles/vscode/.vscode
-* /ide_profiles/vscode/README.md
-
-The README should explain what the profile does, how to take advantage of it,
-and how to install it.
-
-Frankly, I've never been involved in a project with multiple IDE profiles
-before. I believe the best way to handle this would be to keep them out of the
-repo root to avoid clutter. My expectation is that most profiles will include
-instructions to copy files to a new location to get picked up by the IDE, but
-that's just a guess.
-
-One last note here: regardless of the IDE used, every submitted project must
-still be compilable with cmake and make./
-
-## How to write a README
-A well written README file can enhance your project and portfolio.  Develop your abilities to create professional README files by completing [this free course](https://www.udacity.com/course/writing-readmes--ud777).
-
+![Dealing with long curves](media/curve.png)
