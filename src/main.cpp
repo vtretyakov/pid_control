@@ -35,7 +35,7 @@ int main()
   PID pid;
   PID vel_pid;
   // TODO: Initialize the pid variable.
-  pid.Init(0.08, 0.01, 6.5, 5.0);
+  pid.Init(0.05, 0.003, 6.5, 100.0);
   vel_pid.Init(0.5, 0.01, 4.5, 100.0);
 
   h.onMessage([&pid, &vel_pid](uWS::WebSocket<uWS::SERVER> ws, char *data, size_t length, uWS::OpCode opCode) {
