@@ -53,6 +53,12 @@ The base PID algorithm follows what's presented in the lessons. The only differe
 
 ### Describe the effect each of the P, I, D components had in your implementation.
 
+`P` part effectively is sufficient to have the system reacting on the error and compensating for it. But the maximum result you can achieve is either understeering or oscillation.
+
+`D` part helps to compensate for oversteering or for a sudden change of the error. Especially it is helpful on high speed when the error is growing quickly and suddenly, e.g., on sharp turns.
+
+`I` part is normally required to compensate for the static state error. But in the case of long sharp turns it also helps to stay on track because the rate of the error change is close to zero, so `D` part is becoming inefficient.
+
 ### Describe how the final hyperparameters were chosen.
 
 There are two controllers that work together - the velocity and steering controllers. Tuning the velocity controller was the easiest task. I started with proportional part only reaching a satisfactory speed control with a static offset. Then I moved on to the differential part to reach a satisfactory behaviour in particular for braking. The last step was adding the integral part to compensate for the static offset.
